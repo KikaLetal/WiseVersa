@@ -1,0 +1,80 @@
+.dictionaryList_container{
+    background-color: #1E1E1E;
+    border-radius: 15px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    min-height: 97px;
+
+    overflow: hidden;
+}
+
+.dictionaryList_container_top{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 15px;
+    margin: 21px 0 0 13px;
+}
+
+.dictionaryList_container_img{
+    object-fit: contain;
+    flex-shrink: 0; 
+}
+
+.dictionaryList_container_top_info{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-content: center;
+}
+
+.dictionaryList_container_top_info_listCount{
+    color: #A3A3A3;
+    font-size: 14px;
+}
+
+.dictionaryList_container_bottom{
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+
+    overflow: hidden;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.25s ease,
+        margin 0.25s ease;
+
+    margin: 0 auto 0 auto;
+
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.dictionaryList_container:hover .dictionaryList_container_bottom {
+    max-height: 100px;
+    opacity: 1;
+
+    transform: translateY(0);
+
+    margin: 47px auto 15px auto;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.dictionaryList_container_bottom_button{
+    background-color: #2A2A2A;
+    border-radius: 15px;
+    width: 157px;
+    padding: 11px 0px;
+    font-size: 14px;
+}
+
+.cursor_pointer {
+    cursor: pointer;
+}

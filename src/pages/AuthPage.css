@@ -1,0 +1,25 @@
+.autorization_form_areas_inputs_input_and_error{
+    width: 100%;
+}
+
+input.error {
+    border-color: red !important;
+    outline: none;
+}
+
+input.error:focus {
+    border-color: red !important;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+}
+
+.error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

@@ -1,0 +1,160 @@
+.autorization_wraper{
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: -1;
+}
+
+.autorization_container{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2A2A2A;
+    border-radius: 20px;
+    padding: 95px 110px 53px 110px;
+    margin: auto;
+    max-width: 702px;
+}
+
+.autorization_container_title{
+    font-size: 36px;
+    color: #EAEAEA;
+    margin-bottom: 47px;
+}
+
+.autorization_container_form{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 72px;
+    min-width: 483px;
+}
+
+.autorization_form_areas_inputs_block{
+    width: 100%;
+}
+
+.autorization_form_areas{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+}
+
+.autorization_form_areas_inputs{
+    display: flex;
+    flex-direction: column;
+    gap: 33px;
+}
+
+.autorization_form_areas_inputs_block{
+    padding: 25px 16px 25px 43px;
+
+    background-color: #606266;
+    border-radius: 50px;
+
+    display: flex;
+    align-items: center;
+}
+
+.autorization_form_areas_inputs_input{
+    filter: none !important;
+    font-size: 16px;
+}
+
+.autorization_form_areas_inputs_input:-webkit-autofill,
+.autorization_form_areas_inputs_input:-webkit-autofill:hover,
+.autorization_form_areas_inputs_input:-webkit-autofill:focus,
+.autorization_form_areas_inputs_input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #606266 inset !important;
+    -webkit-text-fill-color: #EAEAEA !important;
+}
+
+.autorization_form_areas_inputs_input::placeholder{
+    color: #A3A3A3;
+}
+
+.autorization_form_areas_inputs_password{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #606266;
+    border-radius: 50px;
+    gap: 20px;
+
+    padding-right: 16px;
+}
+
+.autorization_password{
+    border-radius: 50px 0 0 50px;
+    padding: 25px 0 25px 44px;
+    width: 100%;
+}
+
+.autorization_password::placeholder{
+    color: #A3A3A3;
+}
+
+.autorization_form_areas_inputs_password_showBtn_img{
+    width: 30px;
+    height: 30px;
+}
+
+.autorization_form_areas_rememberme{
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-left: 18px;
+}
+
+.autorization_form_areas_rememberme_btn{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+.autorization_form_areas_rememberme_label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 16px; 
+}
+
+.autorization_form_areas_rememberme_label::before {
+    content: "";
+    display: inline-block;
+    width: 25px; 
+    height: 25px;
+    border: 2px solid #606266;
+    border-radius: 4px;
+    margin-right: 10px;
+    transition: background-color 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+}
+
+.autorization_form_areas_rememberme_label:has(.autorization_form_areas_rememberme_btn:checked)::before {
+    background-color: #A3A3A3;
+    background-size: contain;
+    border-color: #A3A3A3;
+}
+
+.autorization_Enter{
+    width: fit-content;
+    padding: 18px 66px;
+    border-radius: 50px;
+    background-color: #4DA3FF;
+    color: #EAEAEA;
+    font-size: 26px;
+}
+
+.autorization_switchToReg{
+    margin-top: 47px;
+    font-size: 20px;
+}

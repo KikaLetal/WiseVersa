@@ -1,0 +1,65 @@
+/*Header*/
+
+header{
+    background-color: #2A2A2A;
+    border-bottom: #A3A3A3 1px solid;
+  }
+
+  .header_container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 72px;
+    max-width: 1297px;
+    margin: auto;
+  }
+
+  .header_container_leftPart{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 61px;
+  }
+
+  .header_container_leftPart_name{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .header_container_leftPart_name_name{
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  .header_container_leftPart_name_name{
+    font-size: 40px;
+    font-weight: 400;
+  }
+
+  .header_container_leftPart_navPanel{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 62px;
+  }
+
+  .header_container_leftPart_navPanel_link{
+    color: #4DA3FF;
+    font-size: 24px;
+  }
+
+  .header_container_leftPart_navPanel_link:hover{
+    color: #8EC5FF;
+  }
+  .header_container_leftPart_navPanel_link_active{
+    color: #8EC5FF;
+    font-size: 24px;
+    text-decoration: underline;
+    text-decoration-color: #8EC5FF;  
+    text-decoration-thickness: 3px;   
+    text-underline-offset: 25px;
+  }
+ 

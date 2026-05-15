@@ -1,0 +1,120 @@
+.modalOverlay{
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.3);
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal_content{
+    background-color: #2A2A2A;
+    border-radius: 30px;
+    padding: 31px;
+}
+
+.modal_content_title{
+    font-size: 24px;
+}
+
+.modal_content_name{
+    margin-top: 35px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal_content_name_title{
+    font-size: 14px;
+}
+
+.modal_content_name_input{
+    width: 100%;
+    padding: 17px;
+    border-radius: 5px;
+    background-color: #606266;
+    color: #eaeaea;
+    font-size: 18px;
+}
+
+.modal_content_name_input::placeholder{
+    color: #A3A3A3;
+}
+
+.modal_content_languages{
+    margin-top: 57px;
+    display: flex;
+    gap: 31px;
+}
+
+.modal_content_languages_btn{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.modal_content_languages_btn_title{
+    color: #A3A3A3;
+    font-size: 14px;
+}
+
+.modal_content_languages_btn_wraper{
+    display: flex;
+    flex-direction: row;
+    background-color: #606266;
+    border-radius: 5px;
+    padding: 12px 12px 12px 16px;
+}
+
+.modal_content_footer{
+    margin-top: 70px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.modal_content_footer_btn{
+    color: #A3A3A3;
+    padding: 16px 38px;
+}
+
+.modal_content_footer_btn_cancel:hover{
+    color: #EAEAEA;
+}
+
+.modal_content_footer_btn_create{
+    background-color: #4DA3FF;
+    color: #EAEAEA;
+    border-radius: 5px;
+
+    transition: 0.2s;
+}
+
+.modal_content_footer_btn_create:disabled{
+    background-color: #2C4866;
+    color: #A3A3A3;
+    cursor: not-allowed;
+}
+
+.modal_language_picker .translator_container_langs_Btn{
+    max-width: 207px;
+}
+
+.modal_language_picker .translator_container_langs_Btn_content_img{
+    width: 25px;
+    height: 25px;
+}
+
+.modal_language_picker .translator_container_langs_Btn_content_text{
+    color: #EAEAEA;
+    font-size: 16px;
+}
+
+.modal_language_picker.translator_container_langs_Btn{
+    min-width: 0px;
+}

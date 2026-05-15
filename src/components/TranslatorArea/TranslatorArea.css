@@ -1,0 +1,94 @@
+textarea{
+    border: none;
+    outline: none;
+    background: transparent;
+    resize: none;
+    padding: 28px 28px 0px 28px;
+    margin: 0;
+    box-shadow: none;
+    appearance: none;
+}
+
+.translator_container{
+    background-color: #2A2A2A;
+    border-radius: 30px;
+    height: 361px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;       
+}
+
+.translator_container_langs {
+    height: 72px;
+    gap: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    border-bottom: 1px #A3A3A3 solid;
+    
+}
+
+.translator_container_translatorTexts{
+    display: flex;
+    justify-content: space-between;
+    min-height: 0;
+    flex: 1 1 auto;
+}
+
+.translator_container_translatorTexts_splitor{
+    border-left: 1px solid #A3A3A3;
+    flex-shrink: 0;
+}
+
+.translator_side {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.translator_container_translatorTexts_input {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.translator_container_translatorTexts_input_inputArea{
+    flex: 1 1 auto;
+    width: 100%;
+    height: 100%;
+    padding: 20px 24px;
+    font-size: 24px;
+    overflow-y: auto;
+}
+
+.translator_container_wordsLeng {
+    margin: 8px 25px 18px 0px;
+    text-align: right;
+    font-size: 18px;
+    color: #A3A3A3;
+    padding-right: 10px;
+}
+
+.clear_btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    background: transparent;
+    font-size: 22px;
+    border: none;
+    cursor: pointer;
+
+    color: #A3A3A3;
+}
+
+
+
+.clear_btn:hover {
+    color: #606266;
+}

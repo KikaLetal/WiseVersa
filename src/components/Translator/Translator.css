@@ -1,0 +1,25 @@
+.contentWraper{
+  border-radius: 30px;
+  max-width: 1297px;
+  margin: auto;
+}
+
+.translator_container{
+  margin-top: 90px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.17);
+}
+
+.translator_container_translatorTexts{
+  height: 289px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.translator_container_translatorTexts_input_inputArea{
+  width: max-content;
+}
+
+.translator_container_translatorTexts_splitor{
+  border-left: 1px solid #A3A3A3;
+  height: 100%;
+} 

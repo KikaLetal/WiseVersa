@@ -1,0 +1,116 @@
+.registration_wraper{
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: -1;
+}
+
+.registration_container{
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #2A2A2A;
+    border-radius: 20px;
+    padding: 95px 110px 53px 110px;
+    margin: auto;
+    max-width: 702px;
+}
+
+.registration_container_title{
+    font-size: 36px;
+    color: #EAEAEA;
+    margin-bottom: 47px;
+}
+
+.registration_container_form{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 72px;
+    min-width: 483px;
+}
+
+.registration_form_areas{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+}
+
+.registration_form_areas_inputs{
+    display: flex;
+    flex-direction: column;
+    gap: 33px;
+}
+
+.registration_form_areas_inputs_block{
+    padding: 25px 16px 25px 43px;
+
+    background-color: #606266;
+    border-radius: 50px;
+
+    display: flex;
+    align-items: center;
+}
+
+.registration_form_areas_inputs_input{
+    filter: none !important;
+    font-size: 16px;
+}
+
+.registration_form_areas_inputs_input:-webkit-autofill,
+.registration_form_areas_inputs_input:-webkit-autofill:hover,
+.registration_form_areas_inputs_input:-webkit-autofill:focus,
+.registration_form_areas_inputs_input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px #606266 inset !important;
+    -webkit-text-fill-color: #EAEAEA !important;
+}
+
+.registration_form_areas_inputs_input::placeholder{
+    color: #A3A3A3;
+}
+
+.registration_form_areas_inputs_password{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #606266;
+    border-radius: 50px;
+    gap: 20px;
+
+    padding-right: 16px;
+}
+
+.registration_password{
+    border-radius: 50px 0 0 50px;
+    padding: 25px 0 25px 44px;
+    width: 100%;
+}
+
+.registration_password::placeholder{
+    color: #A3A3A3;
+}
+
+.registration_form_areas_inputs_password_showBtn_img{
+    width: 30px;
+    height: 30px;
+}
+
+.registration_Enter{
+    width: fit-content;
+    padding: 18px 66px;
+    border-radius: 50px;
+    background-color: #4DA3FF;
+    color: #EAEAEA;
+    font-size: 26px;
+}
+
+.registration_switchToReg{
+    margin-top: 47px;
+    font-size: 20px;
+}
