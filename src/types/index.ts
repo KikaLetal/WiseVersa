@@ -7,8 +7,9 @@ export interface NavItem {
 }
 
 export interface DictionaryListType{
-    id ?: number;
+    id?: number
     name : string
+    type?: 'custom' | 'favorites' | 'history'
     itemsCounts?: number
     sourceLang?: LanguageOption
     targetLang?: LanguageOption

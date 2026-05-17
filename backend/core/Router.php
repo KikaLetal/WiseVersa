@@ -7,9 +7,14 @@ class Router {
         $method = $_SERVER['REQUEST_METHOD'];
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-        $segments = explode('/', trim($uri, '/'));
-
         switch ($uri) {
+            case '/auth/ping':
+                if ($method === 'GET') {
+                    echo json_encode(['success' => true, 'ok' => true]);
+                    return;
+                }
+                break;
+
             case '/auth/register':
                 // POST /api/auth/register
                 if($method === 'POST') {
@@ -59,6 +64,6 @@ class Router {
 
         http_response_code(404);
 
-        echo json_encode(['error' => 'Endpoint not found']);
+        echo json_encode(['success' => false, 'error' => 'Endpoint not found']);
     }
 }

@@ -1,6 +1,4 @@
 <?php
-header("Content-Type: application/json");
-
 require_once BASE_PATH . "/services/AuthService.php";
 require_once BASE_PATH . "/middleware/AuthMiddleware.php";
 
@@ -18,12 +16,20 @@ class AuthController {
         $result = $service->register($data);
 
         if (isset($result['error'])) {
-            http_response_code(400);
+             $statusCode = 400; 
+            
+            if ($result['error'] === 'Username already exists') {
+                $statusCode = 409; 
+            } elseif (strpos($result['error'], 'Registration failed') !== false) {
+                $statusCode = 500;
+            }
+            
+            http_response_code($statusCode);
             echo json_encode([
                 "success" => false,
                 "error" => $result['error']
             ]);
-            return;
+            exit;
         }
 
         echo json_encode([
@@ -39,12 +45,21 @@ class AuthController {
             true
         );
 
+        if (!is_array($data)) {
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'error' => 'Invalid JSON body',
+            ]);
+            return;
+        }
+
         $service = new AuthService();
 
         $result = $service->login($data);
 
         if (isset($result['error'])) {
-            http_response_code(400);
+            http_response_code(401);
             echo json_encode([
                 "success" => false,
                 "error" => $result['error']
@@ -68,7 +83,7 @@ class AuthController {
         $result = $service->meById($payload['id']);
 
         if (isset($result['error'])) {
-            http_response_code(401);
+            http_response_code(404);
             echo json_encode([
                 "success" => false,
                 "error" => $result['error']

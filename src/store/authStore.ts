@@ -31,40 +31,19 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         password: string, 
         rememberMe?: boolean
     }) => {
-        set({ loading: true });
+        const res = await loginApi(data);
+        const { token, user } = res;
 
-        try {
-            const res = await loginApi(data);
-
-            if (!res.success) throw new Error(res.error);
-
-            const { token, user } = res.data;
-
-            get().setAuth(token, user, data.rememberMe || false);
-
-        } catch (e) {
-            throw e;
-        } finally {
-            set({ loading: false });
-        }
+        get().setAuth(token, user, data.rememberMe || false);
     },
 
     register: async (data) => {
-        set({ loading: true });
+        const res = await registerApi(data);
+        const { token, user } = res;
 
-        try{
-            const res = await registerApi(data);
+        get().setAuth(token, user, false);
 
-            if(!res.success) throw new Error(res.error);
-
-            const  {token, user } = res.data;
-
-            get().setAuth(token, user, false);
-
-            return res;
-        } finally {
-            set({ loading: false });
-        }
+        return res;
     },
 
     logout: () => {
@@ -93,12 +72,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
         try{
             const res = await meApi(token);
-
-            if (!res.success || !res.data.user) throw new Error();
             
             set({ 
                 token, 
-                user: res.data.user,
+                user: res.user,
                 isAuth: true,
                 loading: false
             });

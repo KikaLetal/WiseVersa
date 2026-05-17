@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "backend": "php -S 127.0.0.1:8000 -t backend backend/index.php",
+    "backend:check": "php -r \"$r=@file_get_contents('http://127.0.0.1:8000/auth/ping'); echo $r?:'FAIL: backend not running';\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

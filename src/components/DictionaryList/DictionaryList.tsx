@@ -12,7 +12,7 @@ const DictionaryList : React.FC<DictionaryListProps> = ({dictionaryList, onClick
         <>
             <div className={`dictionaryList_container ${onClick ? "cursor_pointer" : ""}`} onClick={onClick}>
                 <div className="dictionaryList_container_top">
-                    <img src={dictionaryList.image} alt="dictionaryList_container_top_img" className="dictionaryList_container_img" />
+                    <img src={`../sources/icons/${dictionaryList.image}`} alt="dictionaryList_container_top_img" className="dictionaryList_container_img" />
                     <div className="dictionaryList_container_top_info">
                         <p className="dictionaryList_container_top_info_listName"> {dictionaryList.name} </p>
 

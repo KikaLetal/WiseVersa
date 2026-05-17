@@ -1,47 +1,52 @@
-import { apiClient } from "../client";
+import { apiClient, type ApiResponse } from "../client";
+import { type User } from "../../types/types";
+
+type AuthResponse = {
+    token: string;
+    user: User;
+};
+
+type MeResponse = {
+    user: User;
+};
 
 export const register = async (data: {
     username: string;
     password: string;
     avatar: File | null;
-}) => {
+}): Promise<ApiResponse<AuthResponse>> => {
     const formData = new FormData();
 
     formData.append("username", data.username);
     formData.append("password", data.password);
-    
-    if(data.avatar) {
+
+    if (data.avatar) {
         formData.append("avatar", data.avatar);
     }
 
-    return apiClient("/auth/register",{
+    return apiClient<AuthResponse>("/auth/register", {
         method: "POST",
-        body: formData
+        body: formData,
+        auth: false,
     });
 };
 
 export const login = async (data: {
     username: string;
     password: string;
-}) => {
-    const res = await apiClient("/auth/login",{
+}): Promise<ApiResponse<AuthResponse>> => {
+    return apiClient<AuthResponse>("/auth/login", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        auth: false,
     });
-
-    return res;
 };
 
-export const me = async (token: string) => {
-    const res = await apiClient("/auth/me", {
+export const me = async (token: string): Promise<ApiResponse<MeResponse>> => {
+    return apiClient<MeResponse>("/auth/me", {
         method: "GET",
         headers: {
             Authorization: `Bearer ${token}`,
         },
     });
-
-    return res;
 };

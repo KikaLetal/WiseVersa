@@ -8,7 +8,18 @@ class DictListService {
         $this->repository = new DictListRepository();
     }   
     public function getLists($user_Id) {
-        return $this->repository->getLists($user_Id);
+        $lists = $this->repository->getLists($user_Id);
+
+        foreach ($lists as &$list) {
+            if (empty($list['icon'])) {
+                $list['icon'] = 'default_list.svg';
+            }
+            
+            $list['itemsCounts'] = $this->repository->getItemsCount($list['id']);
+        }
+        unset($list);
+
+        return $lists;
     }
 
     public function createList($data) {
@@ -19,11 +30,52 @@ class DictListService {
             ];
         }
 
+        if (isset($data['icon']) && $data['icon']['tmp_name']) {
+            $iconPath = $this->uploadIcon($data['icon']);
+            if ($iconPath) {
+                $data['icon'] = $iconPath;
+            }
+        }
+
         $id = $this->repository->createList($data);
 
         return [
             "id" => $id,
             "name" => $data['name']
         ];
+    }
+
+    public function updateListIcon($listId, $iconFile) {
+        $iconPath = $this->uploadIcon($iconFile);
+        
+        if (!$iconPath) {
+            return ["error" => "Failed to upload icon"];
+        }
+
+        $result = $this->repository->updateIcon($listId, $iconPath);
+        
+        return ["success" => $result];
+    }
+
+    private function uploadIcon($file) {
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        
+        if (!in_array($file['type'], $allowedTypes)) {
+            return false;
+        }
+
+        $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $fileName = 'list_icon_' . uniqid() . '.' . $extension;
+        $uploadPath = BASE_PATH . "/uploads/list_icons/" . $fileName;
+
+        if (!is_dir(dirname($uploadPath))) {
+            mkdir(dirname($uploadPath), 0755, true);
+        }
+
+        if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+            return $fileName;
+        }
+
+        return false;
     }
 }

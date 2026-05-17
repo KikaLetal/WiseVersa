@@ -54,4 +54,16 @@ class UserRepository {
 
         return $db->insert_id;
     }
+
+    public function beginTransaction() {
+        Database::beginTransaction();
+    }
+
+    public function commit() {
+        Database::commit();
+    }
+
+    public function rollback() {
+        Database::rollback();
+    }
 }

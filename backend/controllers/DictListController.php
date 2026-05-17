@@ -1,7 +1,6 @@
 <?php
 require_once BASE_PATH . '/services/DictListService.php';
-require_once BASE_PATH . '/middleware/AuthMiddleware.php'; 
-header("Content-Type: application/json");
+require_once BASE_PATH . '/middleware/AuthMiddleware.php';
 
 class DictListController {
 
@@ -47,6 +46,37 @@ class DictListController {
         echo json_encode([
             "success" => true,
             "data" => $result
+        ]);
+    }
+
+    public function updateIcon($listId) {
+        $middleware = new AuthMiddleware();
+        $payload = $middleware->handle();
+
+        if (!isset($_FILES['icon'])) {
+            http_response_code(400);
+            echo json_encode([
+                "success" => false,
+                "error" => "Icon file is required"
+            ]);
+            return;
+        }
+
+        $service = new DictListService();
+        $result = $service->updateListIcon($listId, $_FILES['icon']);
+
+        if (isset($result["error"])) {
+            http_response_code(400);
+            echo json_encode([
+                "success" => false,
+                "error" => $result["error"]
+            ]);
+            return;
+        }
+
+        echo json_encode([
+            "success" => true,
+            "message" => "Icon updated successfully"
         ]);
     }
 }

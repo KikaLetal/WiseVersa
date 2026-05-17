@@ -1,21 +1,18 @@
 <?php
 define('BASE_PATH', __DIR__);
 
-header("Content-Type: application/json");
+require_once BASE_PATH . '/core/cors.php';
 
-// CORS
-header("Access-Control-Allow-Origin: http://localhost:5173");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+try {
+    require_once BASE_PATH . '/db/init.php';
+    require_once BASE_PATH . '/core/Router.php';
 
-if($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
+    $router = new Router();
+    $router->handleRequest();
+} catch (Throwable $e) {
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'error' => $e->getMessage(),
+    ]);
 }
-
-require_once BASE_PATH . '/db/init.php';
-require_once BASE_PATH . '/core/Router.php';
-
-$router = new Router();
-$router->handleRequest();
-?>

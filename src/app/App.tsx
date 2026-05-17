@@ -2,13 +2,12 @@ import '../styles/App.css'
 import Header from "../components/Header/Header"
 import Translator from "../components/Translator/Translator"
 import React from 'react'
-import type { NavItem, DictionaryListType } from '../types/index.ts'
+import type { NavItem } from '../types/index.ts'
 import Dictionary from '../components/Dictionary/Dictionary.tsx'
 import CreateNewListModal from '../components/CreateNewListModal/CreateNewListModal.tsx'
 import { useDictionaryStore } from '../store/dictionaryStore.ts'
 import AuthPage from '../pages/AuthPage.tsx'
 import { useAuthStore } from '../store/authStore.ts'
-import AuthGate from '../components/AuthGate/AuthGate.tsx'
 
 const App : React.FC = () =>{
     const defaultItems: NavItem[] = [
@@ -22,7 +21,6 @@ const App : React.FC = () =>{
     const [currentPage, setCurrentPage] = React.useState<string>('Перевод');
 
     const { isAuth, loading, hydrate } = useAuthStore();
-    const [page, setPage] = React.useState("translator");
 
     const { fetchLists } = useDictionaryStore();
 
@@ -37,7 +35,7 @@ const App : React.FC = () =>{
     }, [isAuth]);
     
     const [inputText, setInputText] = React.useState('');
-    const [outputText, setOutputText] = React.useState('');
+    const [outputText] = React.useState('');
 
     const onChangePage = (page : NavItem) => { 
         const updatedItems = navItems.map(item => ({

@@ -15,7 +15,7 @@ const Autorization : React.FC<AutorizationProps> = ({ onSwitch, onLogin }) => {
     const [password, setPassword] = React.useState("");
 
     const [errors, setErrors] = React.useState<{ username?: string; password?: string }>({});
-    const [isLoading, setIsLoading] = React.useState(false);
+    const [authError, setAuthError] = React.useState("");
 
     const validateForm = (): boolean => {
         const newErrors: {username?: string, password?: string} = {};
@@ -64,30 +64,32 @@ const Autorization : React.FC<AutorizationProps> = ({ onSwitch, onLogin }) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        setAuthError("");
         
         if (!validateForm()) return;
         
-        setIsLoading(true);
         try {
             await onLogin({ username, password, rememberMe });
-        } catch (error:any) {
 
+        } catch (error: unknown) {
             console.error('Login error:', error);
 
-            let errorMessage = "Неверное имя пользователя или пароль";
-            
-            if (error?.message === "Wrong username or password") {
-                errorMessage = "Неверное имя пользователя или пароль";
-            } else if (typeof error === 'string') {
-                errorMessage = error;
-            } else if (error?.message) {
-                errorMessage = error.message;
-            }
-            
-            setErrors({ password: errorMessage });
-        } finally {
-            setIsLoading(false);
-        }
+            const raw =
+                error instanceof Error ? error.message : "Неверное имя пользователя или пароль";
+
+            const message =
+                raw === "Wrong username or password"
+                    ? "Неверное имя пользователя или пароль"
+                    : raw.startsWith("DB connection failed")
+                      ? "Не удалось подключиться к базе данных. Проверьте, что MySQL запущен"
+                      : raw.includes("npm run backend") ||
+                          raw.includes("127.0.0.1:8000")
+                        ? raw
+                        : raw;
+
+            setAuthError(message);
+        } finally {}
     };
 
     return (
@@ -105,7 +107,10 @@ const Autorization : React.FC<AutorizationProps> = ({ onSwitch, onLogin }) => {
                                 <div className="autorization_form_areas_inputs_input_and_error">
                                     <input 
                                         value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
+                                        onChange={(e) => {
+                                            setUsername(e.target.value);
+                                            setAuthError("");
+                                        }}
                                         onBlur={() => handleBlur("username")}
                                         type="text" 
                                         placeholder="Имя пользователя" 
@@ -124,7 +129,10 @@ const Autorization : React.FC<AutorizationProps> = ({ onSwitch, onLogin }) => {
                                             type={showPassword ? "text" : "password"} 
                                             placeholder="Пароль" 
                                             value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
+                                            onChange={(e) =>{
+                                                setPassword(e.target.value);
+                                                setAuthError("");
+                                            }}
                                             onBlur={() => handleBlur('password')}
                                             className='autorization_form_areas_inputs_input autorization_password'
                                         />
@@ -146,9 +154,9 @@ const Autorization : React.FC<AutorizationProps> = ({ onSwitch, onLogin }) => {
                                     
                                     </div>
                                     {errors.password && (
-                                            <span className="error-message" style={{ color: 'red', fontSize: '12px', marginTop: '5px', display: 'block' }}>
-                                                {errors.password}
-                                            </span>
+                                        <span className="error-message" style={{ color: 'red', fontSize: '12px', marginTop: '5px', display: 'block' }}>
+                                            {errors.password}
+                                        </span>
                                     )}
                                 </div>
                             </div>
@@ -162,6 +170,12 @@ const Autorization : React.FC<AutorizationProps> = ({ onSwitch, onLogin }) => {
                                 />
                                 Запомнить меня</label>
                             </div>
+
+                            {authError && (
+                                <span className="error-message" style={{ color: 'red', fontSize: '12px', marginTop: '5px', display: 'block' }}>
+                                    {authError}
+                                </span>
+                            )}
                         </div>
                         <button type="submit" className='autorization_Enter'>Войти</button>
                     </form>

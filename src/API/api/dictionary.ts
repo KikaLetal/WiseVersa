@@ -1,5 +1,7 @@
 import { apiClient } from "../client";
 
+
+
 export const getLists = async() => {
     return apiClient("/dictionary/lists");
 };

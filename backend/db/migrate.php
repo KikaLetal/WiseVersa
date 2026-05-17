@@ -6,7 +6,7 @@ function runMigrations() {
     $db = Database::connect();
 
     if ($db->connect_error) {
-        die("DB connection failed: " . $db->connect_error);
+        throw new RuntimeException("DB connection failed: " . $db->connect_error);
     }
 
     $db->query("
@@ -34,9 +34,9 @@ function runMigrations() {
         $sql = file_get_contents(__DIR__ . "/migrations/$file");
         
         if ($db->query($sql)){
-            echo "Migration applied: $file\n";
+            error_log("Migration applied: $file");
         } else{
-            die("Migration error in $file: " . $db->error);
+            throw new RuntimeException("Migration error in $file: " . $db->error);
         }
 
         $stmt = $db->prepare("INSERT INTO migrations (filename) VALUES (?)");

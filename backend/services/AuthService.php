@@ -1,22 +1,16 @@
 <?php
 
 require_once BASE_PATH . '/repo/UserRepository.php';
-require_once BASE_PATH .'/services/JWTService.php';
 require_once BASE_PATH . '/repo/DictListRepository.php';
+require_once BASE_PATH .'/services/JWTService.php';
 
 class AuthService {
-    private UserRepository $repo;
-    private DictListRepository $dictRepo;
+    private UserRepository $userRepo;
+    private DictListRepository $dictListRepo;
 
     public function __construct(){
-        $this->repo = new UserRepository();
-        $this->dictRepo = new DictListRepository();
-    }
-
-    private function createDefaultLists($userId) {
-        $this->dictRepo->createSystemList($userId, 'Избранное', 'favorites');
-
-        $this->dictRepo->createSystemList($userId, 'История', 'history');
+        $this->userRepo = new UserRepository();
+        $this->dictListRepo = new DictListRepository();
     }
 
     public function register($data){
@@ -24,7 +18,7 @@ class AuthService {
             return ["error" => "Missing required fields"];
         }
 
-        $existingUser = $this->repo
+        $existingUser = $this->userRepo
         ->getUserByUsername($data['username']);
 
         if ($existingUser) {
@@ -39,6 +33,7 @@ class AuthService {
         );
 
         $profilePicture = 'default.png';
+        $uploadPath = null;
 
         if(!empty($data['avatar']) && $data['avatar']['tmp_name']) {
             $extension = pathinfo(
@@ -58,29 +53,69 @@ class AuthService {
 
             $profilePicture = $fileName;
         }
+        try{
+            $this->userRepo->beginTransaction();
 
-        $id = $this->repo->createUser([
-            "username" => $data['username'],
-            "password_hash" => $passwordHash,
-            "profile_picture" => $profilePicture
-        ]);
+            $id = $this->userRepo->createUser(
+                [
+                    "username" => $data['username'],
+                    "password_hash" => $passwordHash,
+                    "profile_picture" => $profilePicture
+                ]
+            );
 
-        $this->createDefaultLists($id);
+            if (!$id) {
+                throw new RuntimeException("Failed to create user");
+            }
 
-        $jwtService = new JWTService();
+            $defaultLists = [
+                ['icon'=> 'favourite.svg', 'name' => 'Избранное', 'type' => 'favorites'],
+                ['icon'=> 'history.svg', 'name' => 'История', 'type' => 'history']
+            ];
 
-        $token = $jwtService->generateToken([
-            'id' => $id,
-            'username' => $data['username']
-        ]);
+            foreach ($defaultLists as $list) {
+                $listId = $this->dictListRepo->createSystemList(
+                    $id,
+                    $list['name'],
+                    $list['type'],
+                    $list['icon']
+                );
 
-        return [
-            "token" => $token,
-            'user' => [
+                if (!$listId) {
+                    throw new RuntimeException(
+                        "Failed to create default list: {$list['name']}"
+                    );
+                }
+            }
+
+            $this->userRepo->commit();
+
+            $jwtService = new JWTService();
+
+            $token = $jwtService->generateToken([
                 'id' => $id,
                 'username' => $data['username']
-            ]
-        ];
+            ]);
+
+            return [
+                "token" => $token,
+                'user' => [
+                    'id' => $id,
+                    'username' => $data['username']
+                ]
+            ];
+        } catch(Exception $e) {
+            $this->userRepo->rollback();
+
+            if($uploadPath && file_exists($uploadPath)) {
+                unlink($uploadPath);
+            }
+
+            return [
+                "error" => "Registration failed. Please try again."
+            ];
+
+        }
     }
 
     public function login($data){
@@ -94,7 +129,7 @@ class AuthService {
             ];
         }
 
-        $user = $this->repo
+        $user = $this->userRepo
         ->getUserByUsername($data['username']);
 
         if (!$user) {
@@ -132,7 +167,7 @@ class AuthService {
 
     public function meById($userId){
 
-        $user = $this->repo->getUserById($userId);
+        $user = $this->userRepo->getUserById($userId);
 
         if (!$user) {
             return ["error" => "User not found"];
