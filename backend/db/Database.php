@@ -5,10 +5,10 @@ class Database {
     public static function connect(){
         if (self::$instance === null) {
             self::$instance = new mysqli(
-                "localhost",
-                'root',
-                "kita",
-                "translator_db"
+                "***",
+                '***',
+                "***",
+                "***"
             );
 
             if(self::$instance->connect_error) {
