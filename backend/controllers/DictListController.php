@@ -23,15 +23,10 @@ class DictListController {
         $middleware = new AuthMiddleware();
         $payload = $middleware->handle();
 
-        $data = json_decode(
-            file_get_contents('php://input'),
-            true
-        );
-
+        $data = json_decode(file_get_contents('php://input'), true);
         $data['user_id'] = $payload['id'];
 
         $service = new DictListService();
-
         $result = $service->createList($data);
 
         if (isset($result["error"])) {
@@ -43,10 +38,7 @@ class DictListController {
             return;
         }
 
-        echo json_encode([
-            "success" => true,
-            "data" => $result
-        ]);
+        echo json_encode(["success" => true, "data" => $result]);
     }
 
     public function updateIcon($listId) {

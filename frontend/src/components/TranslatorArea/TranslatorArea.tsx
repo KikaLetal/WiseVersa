@@ -21,7 +21,7 @@ const TranslatorArea: React.FC<TranslatorAreaProps> = ({
     return (
         <div className="translator_container_translatorTexts_input">
 
-            { value.length > 0 && !readOnly && (
+            { (value ?? '').length > 0 && !readOnly && (
                 <button
                     type="button"
                     className='clear_btn'

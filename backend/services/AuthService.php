@@ -101,7 +101,8 @@ class AuthService {
                 "token" => $token,
                 'user' => [
                     'id' => $id,
-                    'username' => $data['username']
+                    'username' => $data['username'],
+                    'role' => $user['role'] ?? 'user'
                 ]
             ];
         } catch(Exception $e) {
@@ -112,7 +113,7 @@ class AuthService {
             }
 
             return [
-                "error" => "Registration failed. Please try again."
+                "error" => "Registration failed: " . $e->getMessage()
             ];
 
         }
@@ -160,7 +161,8 @@ class AuthService {
             'user' => [
                 'id' => $user['id'],
                 'username' => $user['username'],
-                'profile_picture' => $user['profile_picture']
+                'profile_picture' => $user['profile_picture'],
+                'role' => $user['role'] ?? 'user'
             ]
         ];
     }
@@ -177,7 +179,8 @@ class AuthService {
             "user" => [
                 'id' => $user['id'],
                 'username' => $user['username'],
-                'profile_picture' => $user['profile_picture']
+                'profile_picture' => $user['profile_picture'],
+                'role' => $user['role'] ?? 'user'
             ]
         ];
     }

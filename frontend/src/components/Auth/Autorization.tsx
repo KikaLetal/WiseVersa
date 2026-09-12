@@ -84,7 +84,7 @@ const Autorization : React.FC<AutorizationProps> = ({ onSwitch, onLogin }) => {
                     : raw.startsWith("DB connection failed")
                       ? "Не удалось подключиться к базе данных. Проверьте, что MySQL запущен"
                       : raw.includes("npm run backend") ||
-                          raw.includes("127.0.0.1:8000")
+                          raw.includes("127.0.0.1")
                         ? raw
                         : raw;
 

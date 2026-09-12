@@ -8,6 +8,7 @@ import CreateNewListModal from '../components/CreateNewListModal/CreateNewListMo
 import { useDictionaryStore } from '../store/dictionaryStore.ts'
 import AuthPage from '../pages/AuthPage.tsx'
 import { useAuthStore } from '../store/authStore.ts'
+import BlogPage from '../pages/BlogPage.tsx'
 
 const App : React.FC = () =>{
     const defaultItems: NavItem[] = [
@@ -35,7 +36,6 @@ const App : React.FC = () =>{
     }, [isAuth]);
     
     const [inputText, setInputText] = React.useState('');
-    const [outputText] = React.useState('');
 
     const onChangePage = (page : NavItem) => { 
         const updatedItems = navItems.map(item => ({
@@ -59,20 +59,12 @@ const App : React.FC = () =>{
                         inputValue={inputText}
                         onInputChange={(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
                             setInputText(e.target.value)}
-                        outputValue={outputText}
                         onClearInput={onClearInput}
                     />
                 );
             case 'blog':
-                return (
-                    <Translator 
-                        inputValue={inputText}
-                        onInputChange={(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
-                            setInputText(e.target.value)}
-                        outputValue={outputText}
-                        onClearInput={onClearInput}
-                    />
-                );
+                return <BlogPage />;
+                
             case 'dictionary':
                 return (
                     <>
@@ -95,7 +87,6 @@ const App : React.FC = () =>{
                         inputValue={inputText}
                         onInputChange={(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
                             setInputText(e.target.value)}
-                        outputValue={outputText}
                         onClearInput={onClearInput}
                     />
                 );
@@ -105,7 +96,6 @@ const App : React.FC = () =>{
                         inputValue={inputText}
                         onInputChange={(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
                             setInputText(e.target.value)}
-                        outputValue={outputText}
                         onClearInput={onClearInput}
                     />
                 );

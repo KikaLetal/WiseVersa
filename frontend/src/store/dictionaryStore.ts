@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { getLists, createList } from "../API/api/dictionary";
+import { getLists, createList, addItemToDictList } from "../API/api/dictionary";
 import type { DictionaryListType } from "../types";
-import type { LanguageOption } from "../types/types";
+import { LANGUAGES, type LanguageOption } from "../types/types";
 
 interface DictionaryStore {
     lists: DictionaryListType[];
@@ -14,9 +14,16 @@ interface DictionaryStore {
         source_lang: LanguageOption;
         target_lang: LanguageOption;
     }) => Promise<void>;
+    addItemToList: (data: {
+        listId: number; 
+        word: string; 
+        translation: string; 
+        allowDuplicate?: boolean 
+    }) => Promise<void>;
+
 }
 
-export const useDictionaryStore = create<DictionaryStore>((set) => ({
+export const useDictionaryStore = create<DictionaryStore>((set, get) => ({
     lists: [],
     loading: false,
     error: null,
@@ -28,11 +35,20 @@ export const useDictionaryStore = create<DictionaryStore>((set) => ({
             const res = await getLists();
             const listsData = (res as { data?: any[] }).data ?? [];
 
-            const lists = listsData.map(list =>({
-                ...list,
-                image: list.icon,
-                itemsCounts: list.itemsCounts ?? 0
-            }));
+            const lists: DictionaryListType[] = listsData.map(list => {
+                const sourceLangObj = LANGUAGES.find(l => l.code === list.source_lang);
+                const targetLangObj = LANGUAGES.find(l => l.code === list.target_lang);
+
+                return {
+                    id: list.id,
+                    name: list.name,
+                    type: list.type,      
+                    sourceLang: sourceLangObj ?? { code: list.source_lang, name: list.source_lang, flagSrc: '' }, 
+                    targetLang: targetLangObj ?? { code: list.target_lang, name: list.target_lang, flagSrc: '' },
+                    image: list.icon,
+                    itemsCounts: list.itemsCounts ?? 0
+                };
+            });
 
             set({
                 lists: lists,
@@ -49,8 +65,8 @@ export const useDictionaryStore = create<DictionaryStore>((set) => ({
     addList: async (data) => {
         const res = await createList({
             name: data.name,
-            source_lang: data.source_lang.name,
-            target_lang: data.target_lang.name
+            source_lang: data.source_lang.code,
+            target_lang: data.target_lang.code
         });
         const responseData = (res as any).data;
 
@@ -60,12 +76,27 @@ export const useDictionaryStore = create<DictionaryStore>((set) => ({
             type: 'custom',
             sourceLang: data.source_lang,
             targetLang: data.target_lang,
-            image: "../sources/icons/default.svg",
+            image: responseData.icon,
             itemsCounts: 0
         };
 
         set((state) => ({
             lists: [...state.lists, newList]
         }));
+    },
+
+    addItemToList: async (data) => {
+    try {
+        await addItemToDictList(data);
+        const { lists } = get();
+        const updatedLists = lists.map((list: DictionaryListType) =>
+            list.id === data.listId
+                ? { ...list, itemsCounts: (list.itemsCounts || 0) + 1 }
+                : list
+        );
+        set({ lists: updatedLists });
+    } catch (error) {
+        console.error('Failed to add item', error);
     }
+}
 }));

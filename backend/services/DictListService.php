@@ -4,9 +4,24 @@ require_once BASE_PATH . '/repo/DictListRepository.php';
 class DictListService {
     private DictListRepository $repository;
 
+    private array $emojis = [
+        "🐾", "🌟", "💡", "🎯", "🍀", "🐉", "🦄", "🎈", 
+        "🔮", "🧩", "⚡", "🔥", "💎", "🌙", "☄️", "🕯️", 
+        "🧸", "🎨", "🏆", "🍕", "🐧", "🦥", "🌀","🌸",  
+        '😀', '😂', '😍', '🐶', '🐱', '🍎', '📚', '⭐', 
+        '🔥', '❤️', '🎉', '✅', '💡', '🔤', '📖', '✏️',
+        '🌍', '🎓', '🏆', '🎨', '💎', '🚀', '🌟', '🎯'
+    ];
+
+
     public function __construct() {
         $this->repository = new DictListRepository();
     }   
+
+    private function getRandomEmoji(): string {
+        return $this->emojis[array_rand($this->emojis)];
+    }
+
     public function getLists($user_Id) {
         $lists = $this->repository->getLists($user_Id);
 
@@ -23,25 +38,33 @@ class DictListService {
     }
 
     public function createList($data) {
-        
         if (!isset($data['name'], $data['source_lang'], $data['target_lang'])) {
             return [
                 "error" => "Missing fields"
             ];
         }
 
-        if (isset($data['icon']) && $data['icon']['tmp_name']) {
+        if (isset($data['icon']) && is_array($data['icon']) && $data['icon']['tmp_name']) {
             $iconPath = $this->uploadIcon($data['icon']);
             if ($iconPath) {
                 $data['icon'] = $iconPath;
             }
+            else{
+                $data['icon'] = $this->getRandomEmoji();
+            }
+        } else {
+            $data['icon'] = $this->getRandomEmoji();
         }
 
         $id = $this->repository->createList($data);
 
         return [
             "id" => $id,
-            "name" => $data['name']
+            "name" => $data['name'],
+            "icon"    => $data['icon'],
+            "type"    => 'custom',
+            "source_lang" => $data['source_lang'],
+            "target_lang" => $data['target_lang']
         ];
     }
 

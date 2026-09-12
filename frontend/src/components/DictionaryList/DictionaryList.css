@@ -19,6 +19,10 @@
     margin: 21px 0 0 13px;
 }
 
+.dictionaryList_container_emoji{
+    font-size: 40px;
+}
+
 .dictionaryList_container_img{
     object-fit: contain;
     flex-shrink: 0; 

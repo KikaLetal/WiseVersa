@@ -1,0 +1,36 @@
+.wordCard {
+    padding: 12px 16px;
+    position: relative;
+    border-bottom: #A3A3A3 solid 1px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+}
+
+.wordCard_info{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.wordCard_info_translation {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.wordCard_info_translation{
+    font-size: 24px;
+}
+
+.wordCard_info_translation_partOfSpeech{
+    font-size: 15px;
+    color: #A3A3A3;
+}
+
+.wordCard_info_original{
+    font-size: 15px;
+    color: #A3A3A3;
+}

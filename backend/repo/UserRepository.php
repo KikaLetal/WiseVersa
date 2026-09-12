@@ -11,9 +11,10 @@ class UserRepository {
             FROM users 
             WHERE username = :username
         ");
+        
         $stmt->execute(['username' => $username]);
 
-        return $stmt->fetch();
+        return $stmt->fetch() ?: null;
     }
 
     public function getUserById($id) {
@@ -24,9 +25,10 @@ class UserRepository {
             FROM users 
             WHERE id = :id
         ");
+        
         $stmt->execute(['id' => $id]);
 
-        return $stmt->fetch();
+        return $stmt->fetch() ?: null;
     }
 
     public function createUser($data){
@@ -40,13 +42,14 @@ class UserRepository {
             )
             VALUES (:username, :password_hash, :profile_picture)
         ");
+        
         $stmt->execute([
             'username'        => $data['username'], 
             'password_hash'   => $data['password_hash'], 
             'profile_picture' => $data['profile_picture']
         ]);
 
-        return $db->lastInsertId();
+        return (int)$db->lastInsertId();
     }
 
     public function beginTransaction() {

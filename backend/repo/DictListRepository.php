@@ -12,24 +12,38 @@ class DictListRepository {
         ");
 
         $stmt->execute(['user_id' => $userId]);
-        $result = $stmt->get_result();
 
-        return $result->fetch_all(MYSQLI_ASSOC);
+        return $stmt->fetchAll();
+    }
+
+    public function getListById(int $listId): ?array {
+        $db = Database::connect();
+
+        $stmt = $db->prepare("
+            SELECT id, user_id, name, type, source_lang, target_lang, icon 
+            FROM dict_lists 
+            WHERE id = :list_id
+        ");
+        
+        $stmt->execute(['list_id' => $listId]);
+        $res = $stmt->fetch();
+        
+        return $res ?: null;
     }
 
     public function getItemsCount($listId) {
         $db = Database::connect();
 
         $stmt = $db->prepare("
-            SELECT COUNT(*) as count
-            FROM dict_items
-            WHERE list_id = :list_id
+            SELECT id, user_id, name, type, source_lang, target_lang, icon 
+            FROM dict_lists 
+            WHERE id = :list_id
         ");
-
+        
         $stmt->execute(['list_id' => $listId]);
-        $row = $stmt->fetch();
-
-        return (int)($row['count'] ?? 0); 
+        $res = $stmt->fetch();
+        
+        return $res ?: null;
     }
 
     public function createList($data) {
@@ -41,37 +55,32 @@ class DictListRepository {
         ");
 
         $stmt->execute([
-            'user_id'     => $data['user_id'],
-            'name'        => $data['name'],
+            'user_id'     => $data['user_id'], 
+            'name'        => $data['name'], 
             'source_lang' => $data['source_lang'], 
             'target_lang' => $data['target_lang'],
             'icon'        => $data['icon']
         ]);
 
-        return $db->lastInsertId();
+        return (int)$db->lastInsertId();
     }
 
     public function createSystemList($userId, $name, $type, $icon) {
         $db = Database::connect();
-        
-        $sourceLang = 'ru';
-        $targetLang = 'en';
 
         $stmt = $db->prepare("
             INSERT INTO dict_lists (user_id, name, type, source_lang, target_lang, icon) 
-            VALUES (:user_id, :name, :type, :source_lang, :target_lang, :icon)
+            VALUES (:user_id, :name, :type, NULL, NULL, :icon)
         ");
         
         $stmt->execute([
-            'user_id'     => $userId,
-            'name'        => $name,
-            'type'        => $type,
-            'source_lang' => $sourceLang,
-            'target_lang' => $targetLang,
-            'icon'        => $icon
+            'user_id' => $userId, 
+            'name'    => $name, 
+            'type'    => $type, 
+            'icon'    => $icon
         ]);
         
-        return $db->lastInsertId();
+        return (int)$db->lastInsertId();
     }
 
     public function updateIcon($listId, $icon) {
@@ -82,9 +91,9 @@ class DictListRepository {
             SET icon = :icon 
             WHERE id = :id
         ");
-
+        
         return $stmt->execute([
-            'icon' => $icon,
+            'icon' => $icon, 
             'id'   => $listId
         ]);
     }

@@ -1,8 +1,9 @@
-import type React from 'react'
+import React from 'react'
 import './Dictionary.css'
 import DictionaryList from '../DictionaryList/DictionaryList'
 import { useDictionaryStore } from '../../store/dictionaryStore';
-
+import ListDetail from '../ListDetail/ListDetail';
+import Flashcards from '../Flashcards/Flashcards';
 
 interface DictionaryProps {
     onCreateClick : () => void;
@@ -10,6 +11,29 @@ interface DictionaryProps {
 
 const Dictionary : React.FC<DictionaryProps> = ({onCreateClick}) => {
     const { lists } = useDictionaryStore();
+    const [selectedList, setSelectedList] = React.useState<{ id: number; name: string } | null>(null);
+    const [selectedCards, setSelectedCards] = React.useState<{ id: number; name: string } | null>(null);
+
+    if (selectedCards) {
+        return (
+            <Flashcards
+                listId={selectedCards.id}
+                listName={selectedCards.name}
+                onBack={() => setSelectedCards(null)}
+            />
+        );
+    }
+    
+    if (selectedList) {
+        return (
+            <ListDetail
+                listId={selectedList.id}
+                listName={selectedList.name}
+                onBack={() => setSelectedList(null)}
+                onOpenCards={() => setSelectedCards({ id: selectedList.id, name: selectedList.name })}
+            />
+        );
+    }
 
     return (
         <>
@@ -26,7 +50,14 @@ const Dictionary : React.FC<DictionaryProps> = ({onCreateClick}) => {
                         {lists.length > 0 ? (
                             lists.map((list) =>
                                 list.id ? (
-                                    <DictionaryList key={list.id.toString()} dictionaryList={list}/>
+                                    <DictionaryList 
+                                        key={list.id} 
+                                        dictionaryList={list} 
+                                        onClick={() => setSelectedList({ id: list.id!, name: list.name })}
+                                        onStartCards={() => {
+                                            setSelectedCards({ id: list.id!, name: list.name });
+                                        }}
+                                    />
                                 ) : null
                             )
                         ) : (                        

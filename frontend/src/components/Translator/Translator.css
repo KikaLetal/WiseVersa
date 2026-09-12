@@ -23,3 +23,49 @@
   border-left: 1px solid #A3A3A3;
   height: 100%;
 } 
+
+.showListModal_overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.showListModal_content {
+  background: #2A2A2A;
+  padding: 20px;
+  border-radius: 16px;
+  min-width: 280px;
+  text-align: center;
+}
+
+.showListModal_content_title{
+  color:#EAEAEA
+}
+
+.showListModal_listChoiceBtn, .showListModal_cancelBtn {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+  background: #606266;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.showListModal_cancelBtn{
+  background: #FF4D5F;
+}
+
+.showListModal_listChoiceBtn:hover {
+  background: #A3A3A3;
+}
+.showListModal_noListsMessage {
+  color: #606266;
+  margin: 16px 0;
+}

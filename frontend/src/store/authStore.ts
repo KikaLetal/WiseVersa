@@ -72,10 +72,24 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
         try{
             const res = await meApi(token);
+            const responseData = res as any;
+            
+            if (!responseData.success) {
+                throw new Error(responseData.error || 'Failed to get user');
+            }
+
+            const userData = responseData.user;
+
+            const userWithRole: User = {
+                id: userData.id,
+                username: userData.username,
+                profilePicture: userData.profile_picture,
+                role: userData.role || 'user'
+            };
             
             set({ 
                 token, 
-                user: res.user,
+                user: userWithRole,
                 isAuth: true,
                 loading: false
             });

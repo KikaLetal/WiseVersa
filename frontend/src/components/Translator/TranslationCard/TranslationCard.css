@@ -1,0 +1,39 @@
+.translationCard_wraper {
+    padding: 16px 20px 20px 20px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: #A3A3A3 solid 1px;
+}
+
+.translationCard_translation {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.translationCard_content_translation_text{
+    color: #EAEAEA;
+    font-size: 20px;
+}
+
+.translationCard_content_translation_pos {
+    font-size: 12px;
+    color: #A3A3A3;
+}
+
+.translationCard_actions button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-left: 8px;
+    padding: 4px;
+    border-radius: 6px;
+}
+
+.translationCard_actions button:hover {
+    background: #e0e0e0;
+}

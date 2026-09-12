@@ -25,8 +25,8 @@ const CreateNewListModal : React.FC<CreateNewListModalProps> = ({isOpen, onClose
         
         await addList({
             name: name,
-            source_lang: sourceLanguage.code,
-            target_lang: targetLanguage.code
+            source_lang: sourceLanguage,
+            target_lang: targetLanguage
         });
 
         setName('');
