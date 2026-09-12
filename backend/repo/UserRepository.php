@@ -9,13 +9,11 @@ class UserRepository {
         $stmt = $db->prepare("
             SELECT * 
             FROM users 
-            WHERE username = ?
+            WHERE username = :username
         ");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
+        $stmt->execute(['username' => $username]);
 
-        $result = $stmt->get_result();
-        return $result->fetch_assoc();
+        return $stmt->fetch();
     }
 
     public function getUserById($id) {
@@ -24,13 +22,11 @@ class UserRepository {
         $stmt = $db->prepare("
             SELECT * 
             FROM users 
-            WHERE id = ?
+            WHERE id = :id
         ");
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
+        $stmt->execute(['id' => $id]);
 
-        $result = $stmt->get_result();
-        return $result->fetch_assoc();
+        return $stmt->fetch();
     }
 
     public function createUser($data){
@@ -42,17 +38,15 @@ class UserRepository {
                 password_hash,
                 profile_picture
             )
-            VALUES (?, ?, ?)
+            VALUES (:username, :password_hash, :profile_picture)
         ");
-        $stmt->bind_param("sss",
-            $data['username'], 
-            $data['password_hash'], 
-            $data['profile_picture']
-        );
+        $stmt->execute([
+            'username'        => $data['username'], 
+            'password_hash'   => $data['password_hash'], 
+            'profile_picture' => $data['profile_picture']
+        ]);
 
-        $stmt->execute();
-
-        return $db->insert_id;
+        return $db->lastInsertId();
     }
 
     public function beginTransaction() {

@@ -5,15 +5,11 @@ require_once 'Database.php';
 function runMigrations() {
     $db = Database::connect();
 
-    if ($db->connect_error) {
-        throw new RuntimeException("DB connection failed: " . $db->connect_error);
-    }
-
-    $db->query("
+    $db->exec("
         CREATE TABLE IF NOT EXISTS migrations(
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        filename VARCHAR(255) NOT NULL UNIQUE,
-        applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            id SERIAL PRIMARY KEY,
+            filename VARCHAR(255) NOT NULL UNIQUE,
+            applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )"
     );
 
@@ -22,25 +18,23 @@ function runMigrations() {
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') continue;
         
-        $stmt = $db->prepare("SELECT filename FROM migrations WHERE filename = ?");
-        $stmt->bind_param("s", $file);
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $stmt = $db->prepare("SELECT filename FROM migrations WHERE filename = :filename");
+        $stmt->execute(['filename' => $file]);
 
-        if ($result->num_rows > 0){
+        if ($stmt->fetch()) {
             continue;
         }
 
         $sql = file_get_contents(__DIR__ . "/migrations/$file");
-        
-        if ($db->query($sql)){
+
+        try{
+            $db->exec($sql);
             error_log("Migration applied: $file");
-        } else{
-            throw new RuntimeException("Migration error in $file: " . $db->error);
+        } catch (PDOException $e) {
+            throw new RuntimeException("Migration error in $file: " . $e->getMessage());
         }
 
-        $stmt = $db->prepare("INSERT INTO migrations (filename) VALUES (?)");
-        $stmt->bind_param("s", $file);
-        $stmt->execute();
+        $stmt = $db->prepare("INSERT INTO migrations (filename) VALUES (:filename)");
+        $stmt->execute(['filename' => $file]);
     }   
 }

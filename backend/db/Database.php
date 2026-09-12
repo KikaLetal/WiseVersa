@@ -4,27 +4,29 @@ class Database {
     private static $instance = null;
     public static function connect(){
         if (self::$instance === null) {
-            self::$instance = new mysqli(
-                "***",
-                '***',
-                "***",
-                "***"
-            );
+            $host = getenv('BACKEND_HOST') ?: 'postgres';
+            $user = getenv('DB_USER') ?: 'postgres';
+            $password = getenv('DB_PASSWORD') ?: '';
+            $database = getenv('DB_NAME') ?: '';
+            $port = '5432';
 
-            if(self::$instance->connect_error) {
-                throw new RuntimeException(
-                    "DB connection failed: " . self::$instance->connect_error
-                );
+            try {
+                $dsn = "pgsql:host=$host;port=$port;dbname=$database";
+
+                self::$instance = new PDO($dsn, $user, $password, [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                ]);
+            } catch (PDOException $e) {
+                throw new RuntimeException("DB connection failed: " . $e->getMessage());
             }
-
-            self::$instance->set_charset("utf8mb4");
         }
 
         return self::$instance;
     }
 
     public static function beginTransaction() {
-        self::connect()->begin_transaction();
+        self::connect()->beginTransaction();
     }
 
     public static function commit() {
