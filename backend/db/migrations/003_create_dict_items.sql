@@ -1,8 +1,0 @@
-CREATE TABLE IF NOT EXISTS dict_items (
-    id SERIAL PRIMARY KEY,
-    list_id INT NOT NULL,
-    word VARCHAR(255) NOT NULL,
-    translation VARCHAR(255) NOT NULL,
-    FOREIGN KEY (list_id) REFERENCES dict_lists(id) ON DELETE CASCADE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
