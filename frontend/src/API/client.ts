@@ -1,5 +1,5 @@
 export const API_BASE_URL =
-    import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8000";
+    import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8000/api";
 
 type ApiSuccess<T> = T & {
     success: true;
@@ -41,7 +41,7 @@ export const apiClient = async <T>(
         });
     } catch {
         throw new Error(
-            `Не удалось подключиться к ${API_BASE_URL}. Запустите: npm run backend`,
+            `Не удалось подключиться к ${API_BASE_URL}.`,
         );
     }
 

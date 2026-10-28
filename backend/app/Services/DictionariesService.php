@@ -73,15 +73,17 @@ class DictionariesService
             ->get();
     }
 
-    public function addItem(int $listId, string $word, string $translation): ?DictItems
+    public function addItem(int $listId, string $word, string $translation, bool $allowDuplicate = false): ?DictItems
     {
-        $exists = DictItems::where('list_id', $listId)
-            ->where('word', $word)
-            ->where('translation', $translation)
-            ->exists();
+        if (!$allowDuplicate) {
+            $exists = DictItems::where('list_id', $listId)
+                ->where('word', $word)
+                ->where('translation', $translation)
+                ->exists();
 
-        if ($exists) {
-            return null;
+            if ($exists) {
+                return null;
+            }
         }
 
         return DictItems::create([

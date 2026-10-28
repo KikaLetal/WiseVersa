@@ -44,7 +44,7 @@ class UserService
             return DB::transaction(function () use ($data, $profilePicture) {
                 $user = User::create([
                     'username'        => $data['username'],
-                    'password'        => $data['password'],
+                    'password'        => Hash::make($data['password']),
                     'profile_picture' => $profilePicture,
                     'role'            => $data['role'] ?? 'user',
                 ]);

@@ -23,16 +23,38 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - ./backend:/var/www/html
-    command: php artisan serve --host=0.0.0.0 --port=8000
+
+    command: sh -c "php artisan storage:link && php artisan serve --host=0.0.0.0 --port=8000"
     environment:
+      - PHP_CLI_SERVER_WORKERS=4
       - DB_CONNECTION=pgsql
       - DB_HOST=postgres
       - DB_PORT=5432
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
+    develop:
+      watch:
+        - action: sync
+          path: ./backend
+          target: /var/www/html
+          ignore:
+            - vendor/
+            - storage/
+            - .env
+            - composer.json
+            - composer.lock
+            - Dockerfile
+
+        - action: rebuild
+          path: ./backend/composer.json
+
+        - action: rebuild
+          path: ./backend/composer.lock
+
+        - action: rebuild
+          path: ./backend/Dockerfile
+
 
   postgres:
     image: postgres:16.0
