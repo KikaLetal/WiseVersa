@@ -30,7 +30,11 @@ export interface TranslationState {
 
 export interface BlogPost {
     id: number;
-    author_id: number;
+    author: {
+        id: number;
+        username: string;
+        profile_picture: string | null;
+    };
     username: string;
     profile_picture: string;
     content: string;

@@ -46,7 +46,7 @@ export const useDictionaryStore = create<DictionaryStore>((set, get) => ({
                     sourceLang: sourceLangObj ?? { code: list.source_lang, name: list.source_lang, flagSrc: '' }, 
                     targetLang: targetLangObj ?? { code: list.target_lang, name: list.target_lang, flagSrc: '' },
                     image: list.icon,
-                    itemsCounts: list.itemsCounts ?? 0
+                    itemsCounts: list.items_count ?? 0
                 };
             });
 

@@ -34,7 +34,11 @@ export const useBlogStore = create<BlogStore>((set, get) => ({
         
         try {
             const res = await getPosts(currentPage, 20);
-            const newPosts = res.data;
+            const newPosts = res.data.map((post: any) => ({
+                ...post,
+                likes_count: post.likes_count ?? post.liked_by_users_count ?? 0,
+                user_liked: Boolean(post.user_liked),
+            }));
             
             set(state => ({
                 posts: reset ? newPosts : [...state.posts, ...newPosts],
